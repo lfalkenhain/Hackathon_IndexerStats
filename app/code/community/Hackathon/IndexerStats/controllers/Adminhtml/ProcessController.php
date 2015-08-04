@@ -42,12 +42,14 @@ class Hackathon_IndexerStats_Adminhtml_ProcessController extends Mage_Index_Admi
         /* @var $gridBlock Mage_Index_Block_Adminhtml_Process_Grid */
         $gridBlock = $this->getLayout()->createBlock('index/adminhtml_process_grid');
         foreach ($indexer->getProcessesCollection()->clear() as $process) {
+            $updatedRequiredOptions=$process->getUpdateRequiredOptions();
             /* @var $process Mage_Index_Model_Process */
             $updateRequiredDisplay = $gridBlock->decorateUpdateRequired(
-                $process->getUpdateRequiredOptions()[intval($process->getUnprocessedEventsCollection()->count() > 0)],
+                $updatedRequiredOptions[intval($process->getUnprocessedEventsCollection()->count() > 0)],
                 $process, null, false);
+            $statusesOptions=$process->getStatusesOptions();
             $statusDisplay = $gridBlock->decorateStatus(
-                $process->getStatusesOptions()[$process->getStatus()],
+                $statusesOptions[$process->getStatus()],
                 $process, null, false);
             $endedAtDisplay = $process->getEndedAt()
                 ? Mage::helper('core')->formatDate($process->getEndedAt(), Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM, true)
